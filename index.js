@@ -285,8 +285,8 @@ app.post("/api/send-email", async (req, res) => {
     try {
         await resend.emails.send({
             from: 'contacto@ngdesinfecciones.com.ar',
-            // to: 'info@ngdesinfecciones.com.ar',
-            to: 'fede.juan.herrera@gmail.com',
+            to: 'info@ngdesinfecciones.com.ar',
+            // to: 'fede.juan.herrera@gmail.com',
             subject,
             html: emailUsMessage
         });
