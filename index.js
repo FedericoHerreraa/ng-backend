@@ -1,9 +1,21 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const corsOptions = {
+    origin: [
+        'https://ngdesinfecciones.com.ar',
+        'https://www.ngdesinfecciones.com.ar'
+    ], 
+    methods: ['POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 function generateMessage(
@@ -199,30 +211,30 @@ function generateMessage(
                         <p class="subtitle">Servicios Profesionales de Desinfección</p>
                     </div>
                 </div>
-                
+
                 <div class="content">
                     <div class="welcome-message">
                         <p>${client ? "¡Gracias por contactarnos! Hemos recibido tu solicitud y nuestro equipo especializado se pondrá en contacto contigo a la brevedad para coordinar el servicio." : "Se ha recibido una solicitud de contacto de un cliente desde la pagina web de NG Desinfecciones."}</p>
                     </div>
-                    
+
                     <div class="info-section">
                         <div class="info-title">${client ? "Detalles de tu Solicitud" : "Detalles de la Solicitud"}</div>
-                        
+
                         <div class="info-item">
                             <div class="info-label">Nombre:</div>
                             <div class="info-value">${name}</div>
                         </div>
-                        
+
                         <div class="info-item">
                             <div class="info-label">Email:</div>
                             <div class="info-value">${email}</div>
                         </div>
-                        
+
                         <div class="info-item">
                             <div class="info-label">Asunto:</div>
                             <div class="info-value">${subject}</div>
                         </div>
-                        
+
                         <div class="info-item">
                             <div class="info-label">Mensaje:</div>
                             <div class="info-value">
@@ -230,9 +242,9 @@ function generateMessage(
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="divider"></div>
-                    
+
                     ${client ? `
                         <div style="text-align: center; color: #1a1a1a; font-size: 14px;">
                             <p><strong>Próximos pasos:</strong></p>
@@ -241,7 +253,7 @@ function generateMessage(
                         </div>
                     ` : ""}
                 </div>
-                
+
                 <div class="footer">
                     <div class="footer-content">
                         <div class="contact-info">
@@ -273,6 +285,7 @@ app.post("/api/send-email", async (req, res) => {
     try {
         await resend.emails.send({
             from: 'contacto@ngdesinfecciones.com.ar',
+            // to: 'info@ngdesinfecciones.com.ar',
             to: 'fede.juan.herrera@gmail.com',
             subject,
             html: emailUsMessage
