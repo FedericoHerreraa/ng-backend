@@ -1,5 +1,4 @@
 const express = require("express");
-const { default: serverlessExpress } = require('@vendia/serverless-express');
 const app = express();
 const { Resend } = require('resend');
 
@@ -293,5 +292,6 @@ app.post("/api/send-email", async (req, res) => {
     }
 });
 
-// No usar app.listen en Vercel
-module.exports = serverlessExpress({ app });
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
